@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complete Circle Animation Loop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .ideas-container {
+            width: 300px;
+            margin: auto;
+        }
+
+        .idea {
+            position: relative;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .circle {
+            position: absolute;
+            width: 20%; /* Relative size to the container */
+            height: 20%; /* Relative size to the container */
+            max-width: 100px; /* Maximum size */
+            max-height: 100px; /* Maximum size */
+            background-image: radial-gradient(circle, red, transparent);
+            filter: blur(5.75px);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            left: -100px; /* Start off screen */
+            opacity: 1; /* Fully visible */
+            transition: left 3s, opacity 0.5s; /* Transition for movement and fading */
+        }
+
+        .idea-content {
+            position: relative; /* Relative container for the circles */
+            display: inline-block; /* Fit to content */
+        }
+
+        .tooltip {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 5px;
+            background-color: #ddd;
+            border: 1px solid #aaa;
+            z-index: 100;
+        }
+
+        .idea:hover .tooltip {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="ideas-container">
+    <div class="idea" onclick="startAnimation(this)">
+        <div class="idea-content">
+            <div class="circle"></div>
+            <div class="circle" style="left: -200px;"></div>
+            <div class="circle" style="left: -300px;"></div>
+            <div class="tooltip">Contribute Stream</div>
+            ---Main Idea 1
+        </div>
+    </div>
+
+    <div class="idea" onclick="startAnimation(this)">
+        <div class="idea-content">
+            <div class="circle"></div>
+            <div class="circle" style="left: -200px;"></div>
+            <div class="circle" style="left: -300px;"></div>
+            <div class="tooltip">Contribute Stream</div>
+            ---Main Idea 2
+        </div>
+    </div>
+
+    <div class="idea" onclick="startAnimation(this)">
+        <div class="idea-content">
+            <div class="circle"></div>
+            <div class="circle" style="left: -200px;"></div>
+            <div class="circle" style="left: -300px;"></div>
+            <div class="tooltip">Contribute Stream</div>
+            ---Main Idea 3
+        </div>
+    </div>
+</div>
+
+<script>
+    function startAnimation(ideaElement) {
+        var ideaContent = ideaElement.querySelector('.idea-content');
+        var circles = ideaContent.querySelectorAll('.circle');
+        var contentWidth = ideaContent.offsetWidth;
+
+        circles.forEach(function(circle, index) {
+            // Fade in and move the circles
+            circle.style.opacity = '1';
+            circle.style.transition = 'none';
+            circle.style.left = -(circle.offsetWidth * (index + 1)) + 'px';
+
+            setTimeout(function() {
+                circle.style.transition = 'left 3s, opacity 0.5s';
+                circle.style.left = contentWidth + 'px';
+            }, index * 100);
+        });
+
+        circles[circles.length - 1].addEventListener('transitionend', function() {
+            // Fade out all circles at the end of the loop
+            circles.forEach(function(circle) {
+                circle.style.opacity = '0';
+            });
+
+            // Reset position and restart loop after a delay
+            setTimeout(function() {
+                startAnimation(ideaElement);
+            }, 500); // Delay before restarting the loop
+        }, { once: true });
+    }
+</script>
+
+</body>
+</html>
